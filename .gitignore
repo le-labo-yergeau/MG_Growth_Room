@@ -1,0 +1,21 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Output
+/output/**
+!/output/**/
+!output/**/Readme.md
+# Data
+/data/**
+!/data/**/
+!/data/**/Readme.md
+
+
+
+
+
+
+
+
