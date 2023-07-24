@@ -13,13 +13,11 @@ fig2
 ggsave(fig2, filename = here("output", "figs", "fig2.tiff"), compression = "lzw", dpi = 600, device = "tiff", height = 14, width = 14, units = "in")
 
 #Figure 3 - MAGs affected by actual or historical water stress
-fig3.1 <- ggarrange(stack.MAG.tax, stack.MAG.SWHC.tax, labels = c("A", "B"),
-                    common.legend = T, nrow=1, ncol=2, legend = "bottom")
-fig3.2 <- ggarrange(bar.mag.perc.soil, bar.gene.mag.soil, labels = c("C","D"),
-                    common.legend = T, nrow=1, ncol=2, legend = "bottom")
-fig3.3 <- ggarrange(bar.mag.perc.SWHC, bar.gene.mag.SWHC, labels = c("E", "F"),
-                    common.legend = T, nrow=1, ncol=2, legend = "bottom")
-fig3 <- ggarrange(fig3.1,fig3.2,fig3.3, nrow = 3, ncol = 1)
+fig3.1 <- ggarrange(bar.mag.perc.soil, bar.gene.mag.soil, bar.soil.overlap, labels = c("A","C","E"),
+                    common.legend = T, nrow=3, ncol=1, legend = "bottom")
+fig3.2 <- ggarrange(bar.mag.perc.SWHC, bar.gene.mag.SWHC, bar.SWHC.overlap, labels = c("B", "D", "F"),
+                    common.legend = T, nrow=3, ncol=1, legend = "bottom")
+fig3 <- ggarrange(fig3.1,fig3.2, nrow = 1, ncol = 2)
 
 fig3
 ggsave(fig3, filename = here("output", "figs", "fig3.tiff"), compression = "lzw", dpi = 600, device = "tiff", height = 14, width = 14, units = "in")
