@@ -2,6 +2,15 @@
 
 #Load data
 plant <- readRDS(here("data", "intermediate", "plant.RDS"))
+lwc <- readRDS(here("data", "intermediate", "lwc.RDS"))
+
+#Merge
+sum((plant$SWHC==lwc$Treatment) & 
+      (plant$Cultivar==lwc$cultivar) & 
+      (plant$Soil_type==lwc$Soil_type) &
+      (plant$Replicates==lwc$Replicates)
+      )#160
+plant$LWC <- lwc$Leaf_moisture
 
 #keep only relevant for this study
 plant.MG <- plant[plant$SWHC %in% c(5,50) & plant$Cultivar=="ACNass",]
@@ -9,20 +18,26 @@ plant.MG$SWHC <- as.character(plant.MG$SWHC)
 plant.MG$Replicates <- as.character(plant.MG$Replicates)
 
 #Test normality and heteroscedascticity
-shapiro.test(plant.MG$Shoot_biomass)
-shapiro.test(plant.MG$Root_biomass)
-bartlett.test(plant.MG$Shoot_biomass~plant.MG$Soil_type)
-bartlett.test(plant.MG$Root_biomass~plant.MG$Soil_type)
-bartlett.test(plant.MG$Shoot_biomass~plant.MG$SWHC)
-bartlett.test(plant.MG$Root_biomass~plant.MG$SWHC)
+shapiro.test(plant.MG$Shoot_biomass) #P=0.002085
+shapiro.test(plant.MG$Root_biomass) #P=0.00407
+shapiro.test(plant.MG$LWC) #P=0.02017
+bartlett.test(plant.MG$Shoot_biomass~plant.MG$Soil_type) #P=0.8317
+bartlett.test(plant.MG$Root_biomass~plant.MG$Soil_type) #P=0.01504
+bartlett.test(plant.MG$LWC~plant.MG$Soil_type) #P=0.7367
+bartlett.test(plant.MG$Shoot_biomass~plant.MG$SWHC) #P=0.0001883
+bartlett.test(plant.MG$Root_biomass~plant.MG$SWHC) #P=4.641e-06
+bartlett.test(plant.MG$LWC~plant.MG$SWHC) #P=0.2002
 
 #Log transform
 shapiro.test(log(plant.MG$Shoot_biomass)) #P=0.003372
 shapiro.test(log(plant.MG$Root_biomass)) #P=0.06382
+shapiro.test(log(plant.MG$LWC)) #P=0.008259
 bartlett.test(log(plant.MG$Shoot_biomass)~plant.MG$Soil_type) #P=0.5672
 bartlett.test(log(plant.MG$Root_biomass)~plant.MG$Soil_type) #P=0.08064
+bartlett.test(log(plant.MG$LWC)~plant.MG$Soil_type)#P=0.3013
 bartlett.test(log(plant.MG$Shoot_biomass)~plant.MG$SWHC) #P=0.09125
 bartlett.test(log(plant.MG$Root_biomass)~plant.MG$SWHC) #P=0.9958
+bartlett.test(log(plant.MG$LWC)~plant.MG$SWHC) #P=9.252e-05
 
 #Anova
 #Shoot
@@ -42,7 +57,7 @@ TukeyHSD(aov(log(plant.MG$Shoot_biomass)~plant.MG$SWHC*plant.MG$Soil_type+plant.
 #5:NI           -5:IR              -0.4272546 -0.8267610 -0.0277482 0.0349550
 #5:NI           -50:NI             -2.0869075 -2.4864140 -1.6874011 0.0000000
 #Letters for plot
-#50:IR  5:IR  50:NI 50:NI
+#50:IR  5:IR  50:NI 5:NI
 #  a    b     a     c
 
 #Root
@@ -62,8 +77,28 @@ TukeyHSD(aov(log(plant.MG$Root_biomass)~plant.MG$SWHC*plant.MG$Soil_type+plant.M
 #5:NI           -5:IR              -0.4318968 -0.9361641  0.07237041 0.1029240
 #5:NI           -50:NI             -2.3776180 -2.8818853 -1.87335075 0.0000000
 #Letters for plot
-#50:IR  5:IR  50:NI 50:NI
+#50:IR  5:IR  50:NI 5:NI
 #  a    b     c     b
+
+#LWC
+summary(aov(plant.MG$LWC~plant.MG$SWHC*plant.MG$Soil_type+plant.MG$Replicates))
+#Df Sum Sq Mean Sq F value   Pr(>F)    
+#plant.MG$SWHC                     1 116.90  116.90 153.173 3.43e-08 ***
+#  plant.MG$Soil_type                1   1.54    1.54   2.016    0.181    
+#plant.MG$Replicates               4   4.46    1.11   1.460    0.275    
+#plant.MG$SWHC:plant.MG$Soil_type  1   0.32    0.32   0.420    0.529    
+#Residuals                        12   9.16    0.76                     
+TukeyHSD(aov(plant.MG$LWC~plant.MG$SWHC*plant.MG$Soil_type+plant.MG$Replicates))
+#diff       lwr        upr     p adj
+#50:IR-5:IR   4.582000  2.941617  6.2223835 0.0000135
+#5:NI-5:IR   -0.808000 -2.448383  0.8323835 0.4877420
+#50:NI-5:IR   4.280638  2.640255  5.9210215 0.0000269
+#5:NI-50:IR  -5.390000 -7.030383 -3.7496165 0.0000025
+#50:NI-50:IR -0.301362 -1.941745  1.3390215 0.9460201
+#50:NI-5:NI   5.088638  3.448255  6.7290215 0.0000045
+#Letters for plot
+#50:IR  5:IR  50:NI 5:NI
+#  a    b     a     b
 
 #Create object with Tukey letters
 tukey.plant <- data.frame(letters = c("a", "b", "c", "b", "a", "b", "a", "c"), Part=c(rep("Root_biomass",4), rep("Shoot_biomass",4)), x = c(rep(c(0.85, 1.25, 1.85, 2.25),2)), Soil_type=c("IR","IR", "NI", "NI","IR","IR", "NI", "NI") , SWHC= c("50","5","50","5","50","5","50","5"), y=c(0.5, 0.25, 1.0, 0.25, 1.80, 0.40, 1.5, 0.35))
@@ -94,3 +129,6 @@ plant.box
 #Interaction
 (mean(plant.MG$Root_biomass[1:5])-mean(plant.MG$Root_biomass[11:15]))/mean(plant.MG$Root_biomass[1:5])*100
 #49.31507
+#LWC
+(mean(plant.MG$LWC[plant.MG$SWHC==50])-mean(plant.MG$LWC[plant.MG$SWHC==5]))/mean(plant.MG$LWC[plant.MG$SWHC==50])*100
+#59.71506

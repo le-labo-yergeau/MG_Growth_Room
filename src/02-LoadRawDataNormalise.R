@@ -8,8 +8,12 @@ map.s$block <- as.character(map.s$block)
 saveRDS(map.s, file = here("data", "intermediate", "map.RDS"))
 
 #Plant fresh biomass
-plant <- read.table(file = here("data", "raw", "plant_fresh_biomass.txt"),  header = T, sep = "\t", comment.char = "") #20 obs in 3 var
+plant <- read.table(file = here("data", "raw", "plant_fresh_biomass.txt"),  header = T, sep = "\t", comment.char = "") #160 obs in 3 var
 saveRDS(plant, file = here("data", "intermediate", "plant.RDS"))
+
+#Leaves water content (%)
+lwc <- read.table(file = here("data", "raw", "leaf_water_content.txt"),  header = T, sep = "\t", comment.char = "") #160 obs in 3 var
+saveRDS(lwc, file = here("data", "intermediate", "lwc.RDS"))
 
 #Annotations
 annot <- fread(file = here("data", "raw", "annotations.tsv"), header = T, sep = "\t", quote = "") # 13108188 obs of 20 variables
