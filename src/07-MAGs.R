@@ -187,7 +187,7 @@ sum.count.mag.soil.all$Status <- factor(sum.count.mag.soil.all$Status, c("SWSH",
 bar.mag.perc.soil <- ggplot(sum.count.mag.soil.all, aes(fill = Status, x = Trait, y = PercentPositiveMAG)) + 
   geom_bar(stat = "summary", fun ="mean", position = "dodge" ) +
   ylab("Percent positive MAGs") + 
-  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil")) +
+  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil"), labels = c("continuous WSH", "intermittent WSH", "unaffected")) +
   theme_bw() +
   scale_y_continuous(limits = c(0,105), expand = c(0,0))+
   scale_x_discrete(labels = c("ACC", "Antioxidants", "Cytokinins", "EPS", "IAA", "Osmolytes"))
@@ -196,9 +196,9 @@ bar.mag.perc.soil
 bar.gene.mag.soil <- ggplot(sum.count.mag.soil.all, aes(fill = Status, x = Trait, y = nbGenePerPositiveMAG)) + 
   geom_bar(stat = "summary", fun ="mean", position = "dodge" ) +
   ylab("Nb genes per positive MAGs") + 
-  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil")) +
+  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil"), labels = c("continuous WSH", "intermittent WSH", "unaffected")) +
   theme_bw() +
-  scale_y_continuous(limits = c(0,105), expand = c(0,0))+
+  scale_y_continuous(limits = c(0,105), expand = c(0,0) )+
   scale_x_discrete(labels = c("ACC", "Antioxidants", "Cytokinins", "EPS", "IAA", "Osmolytes"))
 bar.gene.mag.soil
 
@@ -223,11 +223,16 @@ MAG.soil.overlap.count$Status <- factor(MAG.soil.overlap.count$Status, c("SWSH",
 bar.soil.overlap <- ggplot(MAG.soil.overlap.count, aes(fill = Status, x = Sum, y = Percent)) + 
   geom_bar(stat = "summary", fun ="mean", position = "dodge" ) +
   ylab("% of MAGs") + 
-  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil")) +
+  scale_fill_manual(values = c("darkred", "darkblue", "darkgreen"), guide = guide_legend(title = "Soil"), labels = c("continuous WSH", "intermittent WSH", "unaffected")) +
   theme_bw() +
   scale_y_continuous(limits = c(0,27), expand = c(0,0))+
   scale_x_discrete(labels = c("0", "1", "2", "3", "4", "5", "6"), name = "Number of functional traits")
 bar.soil.overlap
+
+#How many have both osmolytes and IAA?
+sum(df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="no SWSH",]$IAA & df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="no SWSH",]$osmo) #84
+sum(df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="SWSH",]$IAA & df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="SWSH",]$osmo) #107
+sum(df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="unaffected",]$IAA & df.MAG.soil.overlap[df.MAG.soil.overlap$Status=="unaffected",]$osmo) #97
 
 ##MAGs affected by soil water content (actual)
 #Taxonomy

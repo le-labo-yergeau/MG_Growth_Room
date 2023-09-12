@@ -110,7 +110,7 @@ plant.box <- ggplot(data = plant.MG.long, aes(x=Soil_type, y=Biomass, fill=SWHC)
                     geom_boxplot()+
                     facet_wrap(vars(Part), scales = "free_y", labeller = labeller(Part = c("Shoot_biomass" = "Shoot", "Root_biomass" = "Root") ))+
                     theme_bw()+
-                    scale_x_discrete(name="Soil water stress history", labels = c("no SWSH", "SWSH"))+
+                    scale_x_discrete(name="Soil water stress history", labels = c("intermittent", "continuous"))+
                     #xlab() +
                     ylab("Fresh biomass")+
                     scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+

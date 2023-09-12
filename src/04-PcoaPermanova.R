@@ -3,10 +3,7 @@
 ##Normalized by relative abundance
 #Load data
 gene.rel <- readRDS(here("data", "intermediate", "gene.rel.RDS"))
-map <- readRDS(here("data","intermediate","map.RDS"))
-map.s <- map[order(row.names(map)),]
-map.s$perc_SWHC <- as.character(map.s$perc_SWHC)
-map.s$block <- as.character(map.s$block)
+map.s <- readRDS(here("data","intermediate","map.RDS"))
 
 #Calculate Bray-Curtis distance
 bray.rel <- vegdist(gene.rel, method="bray")
@@ -18,7 +15,6 @@ pcoa.rel <- cmdscale(sqrt(bray.rel), k=19, eig=T)
 
 #Sort
 pcoa.rel.s <- pcoa.rel$points[order(row.names(pcoa.rel$points)),]
-map.s <- map[order(row.names(map)),]
 sum(row.names(pcoa.rel.s) == row.names(map.s)) # 20
 
 #create a data frame
@@ -29,14 +25,17 @@ pcoa.rel.map$perc_SWHC <- as.character(pcoa.rel.map$perc_SWHC)
 pcoa.rel$eig[1]/sum(pcoa.rel$eig)*100 #17.1994%
 pcoa.rel$eig[2]/sum(pcoa.rel$eig)*100 #5.914303%
 
+#Reorder manually
+pcoa.rel.map$perc_SWHC <- factor(pcoa.rel.map$perc_SWHC, c("50", "5"))
+
 #Plot
 pcoa.rel.plot <- ggplot(data=pcoa.rel.map, aes(x=X1, y=X2, shape=SoilType, colour=perc_SWHC)) + 
   geom_point() +
   xlab("PCoA axis 1 = 17.2%") + 
   ylab("PCoA axis 2 = 5.9%") + 
   theme_bw()+
-  scale_color_discrete(name = "% SWHC", labels = c("5%", "50%"), type = c("red", "blue"))+
-  scale_shape_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))
+  scale_color_discrete(name = "% SWHC", labels = c("50%", "5%"), type = c("blue", "red"))+
+  scale_shape_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))
 pcoa.rel.plot
 
 #Permanova

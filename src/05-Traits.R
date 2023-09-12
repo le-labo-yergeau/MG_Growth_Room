@@ -4,7 +4,7 @@
 annot <- fread(here("data", "raw", "annotations.tsv"))#13,108,188 obs of 33 variables
 gene.norm <- readRDS(here("data", "intermediate", "gene.norm.RDS"))
 gene.rel <- readRDS(here("data", "intermediate", "gene.rel.RDS"))
-map <- readRDS(here("data", "intermediate", "map.RDS"))
+map.s <- readRDS(here("data", "intermediate", "map.RDS"))
 
 ##IAA - root elongation
 ##Searching for KEGG entry of the last step leading to IAA
@@ -36,7 +36,7 @@ IAA.rel.box <- ggplot(data = sum.map.rel.IAA, aes(x=SoilType, y=sum.IAA, fill=pe
   theme_bw()+
   ylab("Relative abundance")+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   geom_text(data = tukey.IAA.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 IAA.rel.box
 #Anova
@@ -114,7 +114,7 @@ ACC.rel.box <- ggplot(data = sum.map.rel.ACC, aes(x=SoilType, y=sum.ACC, fill=pe
   theme_bw()+
   ylab("Relative abundance")+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   geom_text(data = tukey.ACC.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 ACC.rel.box
 #Anova
@@ -196,7 +196,7 @@ osmo.rel.box <- ggplot(data = sum.map.rel.osmo, aes(x=SoilType, y=sum.osmo, fill
   theme_bw()+
   ylab("Relative abundance")+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   geom_text(data = tukey.osmo.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 osmo.rel.box
 #Anova
@@ -351,7 +351,7 @@ EPS.rel.box <- ggplot(data = sum.map.rel.EPS, aes(x=SoilType, y=sum.EPS, fill=pe
   theme_bw()+
   ylab("Relative abundance")+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   geom_text(data = tukey.EPS.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 EPS.rel.box
 #Anova
@@ -446,7 +446,7 @@ cyto.rel.box <- ggplot(data = sum.map.rel.cyto, aes(x=SoilType, y=sum.cyto, fill
   geom_boxplot()+
   theme_bw()+
   ylab("Relative abundance")+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))#+
   #geom_text(data = tukey.cyto.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 cyto.rel.box
@@ -657,7 +657,7 @@ antiox.rel.box <- ggplot(data = sum.map.rel.antiox, aes(x=SoilType, y=sum.antiox
   theme_bw()+
   ylab("Relative abundance")+
   scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
-  scale_x_discrete(name = "Soil water stress history", labels = c("no SWSH", "SWSH"))+
+  scale_x_discrete(name = "Soil water stress history", labels = c("intermittent", "continuous"))+
   geom_text(data = tukey.antiox.rel, aes(x=x, y=y, label = letters)) #Add letters from tukey
 antiox.rel.box
 #Anova
@@ -712,5 +712,3 @@ adonis2(gene.rel.antiox~perc_SWHC*SoilType,data=map.s, permutations = perm, meth
 #  perc_SWHC:SoilType  1  0.05946 0.04310 1.1352 0.2779    
 #Residual           16  0.83804 0.60752                  
 #Total              19  1.37945 1.00000 
-
-
