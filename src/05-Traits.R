@@ -8,7 +8,7 @@ map.s <- readRDS(here("data", "intermediate", "map.RDS"))
 
 ##IAA - root elongation
 ##Searching for KEGG entry of the last step leading to IAA
-##K01501: nitrilase - spme other pathways
+##K01501: nitrilase - some other pathways
 ##K01426: amidase - some other pathways
 ##K21801: indoleacetamide hydrolase
 ##K11816: indole-3-pyruvate monooxygenase

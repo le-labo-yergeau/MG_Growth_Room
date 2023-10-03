@@ -20,8 +20,8 @@ while (i<=ncol(mag.table.rel)) {
   anova <- aov(mag.table.rel[,i]~map$SoilType*map$perc_SWHC+map$block)
   if(summary(anova)[[1]][1,5]<(0.05/714)){
     if(mean(mag.table.rel[map$SoilType=="IR",i])< mean(mag.table.rel[map$SoilType=="NI",i])){
-      list.MAG.soil <- append(list.MAG.soil, c(colnames(mag.table.rel)[i], "SWSH"))
-    }else{list.MAG.soil <- append(list.MAG.soil, c(colnames(mag.table.rel)[i], "no SWSH"))}  
+      list.MAG.soil <- append(list.MAG.soil, c(colnames(mag.table.rel)[i], "continuous"))
+    }else{list.MAG.soil <- append(list.MAG.soil, c(colnames(mag.table.rel)[i], "intermittent"))}  
   }else{list.MAG.soil <-append(list.MAG.soil, c(colnames(mag.table.rel)[i], "unaffected"))}
   if(summary(anova)[[1]][2,5]<(0.05/714)){
     if(mean(mag.table.rel[map$perc_SWHC=="5",i]) < mean(mag.table.rel[map$perc_SWHC=="50",i])){
@@ -50,9 +50,9 @@ df.mag.summary <- df.mag.soil.tax %>%
 df.mag.summary$Phylum <- gsub("p__","", df.mag.summary$Phylum)
 df.mag.summary$Phylum <- gsub("NULL","unassigned", df.mag.summary$Phylum)
 others <- data.frame(matrix(c(rep("Others",3), 
-                              "SWSH", "no SWSH", "unaffected", 
-                              264-sum(df.mag.summary[df.mag.summary$Status=="SWSH",3]),
-                              171-sum(df.mag.summary[df.mag.summary$Status=="no SWSH",3]),
+                              "continuous", "intermittent", "unaffected", 
+                              264-sum(df.mag.summary[df.mag.summary$Status=="continuous",3]),
+                              171-sum(df.mag.summary[df.mag.summary$Status=="intermittent",3]),
                               714-435-sum(df.mag.summary[df.mag.summary$Status=="unaffected",3])),
                               nrow = 3, ncol = 3))
 colnames(others) <- colnames(df.mag.summary)
