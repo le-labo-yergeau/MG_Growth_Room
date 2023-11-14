@@ -26,28 +26,22 @@ gene <- gene[,order(colnames(gene))]
 saveRDS(gene, here("data", "intermediate", "gene.RDS"))
 
 ##Normalize with internal standard
-#Retrieve the genes related to the standard from genes identified as Thermus in annotations
-#thermus <- data.frame(fread(here("data", "raw", "Thermus_thermophilus.txt"),sep="\t",header=F)) #2917 obs. of 33 var
-#list <- thermus[,2] #2917 values
-#gene.thermus <- gene[rownames(gene) %in% list,] #2917 obs of 20 var
-#sum.gene.thermus <- colSums(gene.thermus)
-
 #Retrieve the genes related to the standard from mapping on Thermus genome
-thermus <- data.frame(read.table(here("data", "raw", "qc_mapping_stats.tsv"),row.names = 1, sep="\t",header=T)) #21 obs. of 10 var
-thermus$properlyPaired <- gsub(",", "", thermus$properlyPaired)
-sum.gene.thermus <- data.frame(as.numeric(thermus$properlyPaired))
-rownames(sum.gene.thermus) <-rownames(thermus)
-sum.gene.thermus$toto <- rep("toto",20)
-sum.gene.thermus <- sum.gene.thermus[order(rownames(sum.gene.thermus)),]
+#thermus <- data.frame(read.table(here("data", "raw", "qc_mapping_stats.tsv"),row.names = 1, sep="\t",header=T)) #21 obs. of 10 var
+#thermus$properlyPaired <- gsub(",", "", thermus$properlyPaired)
+#sum.gene.thermus <- data.frame(as.numeric(thermus$properlyPaired))
+#rownames(sum.gene.thermus) <-rownames(thermus)
+#sum.gene.thermus$toto <- rep("toto",20)
+#sum.gene.thermus <- sum.gene.thermus[order(rownames(sum.gene.thermus)),]
 
 #Get extraction masses
-gram <- data.frame(fread(here("data", "raw", "gram.txt"), sep="\t", header=T)) #20 obs of 3 var
-gram <- gram[order(gram$sample),]
+#gram <- data.frame(fread(here("data", "raw", "gram.txt"), sep="\t", header=T)) #20 obs of 3 var
+#gram <- gram[order(gram$sample),]
 
 #check ordering of three files
-colnames(gene)==gram$sample
-colnames(gene)==rownames(sum.gene.thermus)
-rownames(sum.gene.thermus)==gram$sample
+#colnames(gene)==gram$sample
+#colnames(gene)==rownames(sum.gene.thermus)
+#rownames(sum.gene.thermus)==gram$sample
 
 #Normalize all genes
 ##          1 ng (amount of ng added per sample)*6.022×10^23 (avogadro nr) / 
@@ -58,18 +52,18 @@ rownames(sum.gene.thermus)==gram$sample
 #           If sequenced to extinction, we would have found 9.2646E+10 fragments (bp added/100bp)
 #           Thus, we multiply actual reads of all genes by 9.2646E+10 and divide by number of Thermus reads retrieved
 #           Then divide by the number of gram of soil used in extraction.
-norm.vect <- 9.2646e10/sum.gene.thermus[,1] #fraction of Thermus reads retrieved per sample
-norm.vect <- norm.vect/gram[,3] #fraction of Thermus reads retrieved per gram of soil
+#norm.vect <- 9.2646e10/sum.gene.thermus[,1] #fraction of Thermus reads retrieved per sample
+#norm.vect <- norm.vect/gram[,3] #fraction of Thermus reads retrieved per gram of soil
 
-gene.norm <- data.frame(apply(gene, 1, "*", norm.vect)) #13,108,187 obs, 20 var
-gene.norm[1:10,1:10]
+#gene.norm <- data.frame(apply(gene, 1, "*", norm.vect)) #13,108,187 obs, 20 var
+#gene.norm[1:10,1:10]
 
 #Sanity check
-gene.norm[18,344555] #1882758
-gene[344555,18]*norm.vect[18] #1882758
+#gene.norm[18,344555] #1882758
+#gene[344555,18]*norm.vect[18] #1882758
 
 #save intermediate
-saveRDS(gene.norm, file = here("data", "intermediate", "gene.norm.RDS"))
+#saveRDS(gene.norm, file = here("data", "intermediate", "gene.norm.RDS"))
 
 ##Normalize with relative
 colsum.vect <- colSums(gene)
