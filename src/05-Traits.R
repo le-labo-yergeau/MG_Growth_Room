@@ -1,8 +1,8 @@
 ###Look for traits linked to plant resistance to water stress
 
 #Load data
-annot <- fread(here("data", "raw", "annotations.tsv"))#13,108,188 obs of 33 variables
-gene.norm <- readRDS(here("data", "intermediate", "gene.norm.RDS"))
+annot <- readRDS(here("data", "intermediate", "annot.RDS"))
+#gene.norm <- readRDS(here("data", "intermediate", "gene.norm.RDS"))
 gene.rel <- readRDS(here("data", "intermediate", "gene.rel.RDS"))
 map.s <- readRDS(here("data", "intermediate", "map.RDS"))
 
