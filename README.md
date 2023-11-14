@@ -1,13 +1,16 @@
 # MG_Growth_Room
 R code used for data manipulation, statistical analyses and figure generation for the manuscript "Intermittent water stress favors drought-adapted soil microbes with beneficial traits, mitigating wheat biomass losses during subsequent water stress."
 
-The raw data needed to run the scripts can be found on Zenodo: 
+If you intend to re-run the analyses, please download the entire folder structure (click on "Code", then "Download ZIP"
+)
+
+The raw data needed to run the scripts can be found on Zenodo: . It should be copied to the /data/raw folder.
 
 The scripts should be run in order (01 to 08).
 
 01-LoadPackages.R: Download, install and load necessary packages
 
-02-LoadRawDataNormalise.R: Load raw data, normalize (if needed), order and save as intermediate files (.RDS) in the /data/intermdiate folder.
+02-LoadRawDataNormalise.R: Load raw data, normalize (if needed), order and save as intermediate files (.RDS) in the /data/intermediate folder.
 
 03-PlantBiomass.R: ANOVA and figure generation for plant root and shoot biomass and leaf water content
 
