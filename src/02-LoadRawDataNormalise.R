@@ -98,7 +98,7 @@ mag.table.rel[18,654] #4.46478e-06
 mag.table.s[654,18]/colsum.vect[18] #4.46478e-06
 
 #MAG link file (MAG-contig-gene)
-mag.link <- read.table(file = here("data", "raw", "MAG.link.tsv"), header = F, sep = "\t", comment.char = "") #1,833,497 obs in 3 var
+mag.link <- read.table(file = here("data", "raw", "link.tsv"), header = F, sep = "\t", comment.char = "") #1,833,497 obs in 3 var
 colnames(mag.link) <- c("MAG", "contig", "gene")
 
 #save intermediate
