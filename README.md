@@ -4,7 +4,7 @@ R code used for data manipulation, statistical analyses and figure generation fo
 
 If you intend to re-run the analyses, please download the entire folder structure (click on "Code", then "Download ZIP" )
 
-The raw data needed to run the scripts can be found on Zenodo: [https://doi.org/10.5281/zenodo.10140593](https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdoi.org%2F10.5281%2Fzenodo.10140593&data=05%7C01%7CEtienne.Yergeau%40inrs.ca%7C7af38c8c2dfc41ae71d108dbe652027e%7C80c9267a177f49439958b599ca0e54c2%7C0%7C0%7C638357012125865438%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=IxkiOpbsrPO1lgEZZYczhdIIwmQaMqzRk7YO0fzC9Q8%3D&reserved=0). It should be copied to the /data/raw folder.
+The raw data needed to run the scripts can be found on Zenodo: <https://zenodo.org/doi/10.5281/zenodo.10140592>. It should be copied to the /data/raw folder.
 
 The scripts should be run in order (01 to 08).
 
