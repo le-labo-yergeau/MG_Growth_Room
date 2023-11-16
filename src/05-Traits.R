@@ -251,7 +251,7 @@ adonis2(gene.rel.osmo~perc_SWHC*SoilType,data=map.s, permutations = perm, method
 ##EPS - soil aggregation
 #genes in KEGG
 #Mode: Single Entry to Database
-#From: KEGG PATHWAY map00543
+#From: KEGG PATHWAY ko00543
 #To: KEGG ORTHOLOGY
 #Hits: 73 from 1 database
 #
@@ -410,7 +410,7 @@ adonis2(gene.rel.EPS~perc_SWHC*SoilType,data=map.s, permutations = perm, method 
 ##cytokinines - stomatal closure
 #genes in KEGG
 #Mode: Single Entry to Database
-#From: KEGG PATHWAY map00908
+#From: KEGG PATHWAY ko00908
 #To: KEGG ORTHOLOGY
 #Hits: 10 from 1 database
 #
@@ -492,7 +492,7 @@ adonis2(gene.rel.cyto~perc_SWHC*SoilType,data=map.s, permutations = perm, method
 #Total              19  1.54591 1.00000  
 
 ##antioxydants - ROS suppression
-#genes in KEGG - superoxide dismutase, gluthatione peroxidase and cytochrome c oxidase
+#genes in KEGG - superoxide dismutase, catalase, gluthatione peroxidase and cytochrome c oxidase
 #
 #K00518
 #sodN; nickel superoxide dismutase [EC:1.15.1.1]
