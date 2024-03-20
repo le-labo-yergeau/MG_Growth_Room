@@ -12,7 +12,7 @@ plant <- read.table(file = here("data", "raw", "plant_fresh_biomass.txt"),  head
 saveRDS(plant, file = here("data", "intermediate", "plant.RDS"))
 
 #Leaves water content (%)
-lwc <- read.table(file = here("data", "raw", "leaf_water_content.txt"),  header = T, sep = "\t", comment.char = "") #160 obs in 3 var
+lwc <- read.table(file = here("data", "raw", "Traits.txt"),  header = T, sep = "\t", comment.char = "") #160 obs in #10 var
 saveRDS(lwc, file = here("data", "intermediate", "lwc.RDS"))
 
 #Annotations
@@ -100,8 +100,15 @@ mag.table.s[654,18]/colsum.vect[18] #4.46478e-06
 #MAG link file (MAG-contig-gene)
 mag.link <- read.table(file = here("data", "raw", "link.tsv"), header = F, sep = "\t", comment.char = "") #1,833,497 obs in 3 var
 colnames(mag.link) <- c("MAG", "contig", "gene")
+mag.link$MAG <- gsub("-",".", mag.link$MAG)
+
+#MAG quality from checkM
+mag.qual <- read.table(file = here("data", "raw", "summarized_bins.tsv"), row.names = 1,  header = T, sep = "\t") #714 obs of 25 variables
+row.names(mag.qual) <- gsub("-", ".", row.names(mag.qual))
+mag.qual <- mag.qual[order(row.names(mag.qual)),]
 
 #save intermediate
 saveRDS(mag.table.rel, file = here("data", "intermediate", "mag.table.rel.RDS"))
 saveRDS(mag.link, file = here("data", "intermediate", "mag.link.RDS"))
 saveRDS(mag.tax.sep, file = here("data", "intermediate", "mag.tax.RDS"))
+saveRDS(mag.qual, file = here("data", "intermediate", "mag.qual.RDS"))
