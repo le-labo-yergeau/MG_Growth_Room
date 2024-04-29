@@ -2,15 +2,15 @@
 
 #Load data
 plant <- readRDS(here("data", "intermediate", "plant.RDS"))
-lwc <- readRDS(here("data", "intermediate", "lwc.RDS"))
+trait <- readRDS(here("data", "intermediate", "trait.RDS"))
 
 #Merge
-sum((plant$SWHC==lwc$Treatment) & 
-      (plant$Cultivar==lwc$cultivar) & 
-      (plant$Soil_type==lwc$Soil_type) &
-      (plant$Replicates==lwc$Replicates)
+sum((plant$SWHC==trait$Treatment) & 
+      (plant$Cultivar==trait$cultivar) & 
+      (plant$Soil_type==trait$Soil_type) &
+      (plant$Replicates==trait$Replicates)
       )#160
-plant[,7:11] <- lwc[,2:6]
+plant[,7:12] <- trait[,2:7]
 
 #keep only relevant for this study
 plant.MG <- plant[plant$SWHC %in% c(5,50) & plant$Cultivar=="ACNass",]
@@ -18,12 +18,13 @@ plant.MG$SWHC <- as.character(plant.MG$SWHC)
 plant.MG$Replicates <- as.character(plant.MG$Replicates)
 
 #Replace weird value
-plant.MG[5,9] <- 100
+plant.MG[5,10] <- 100
 
 #Test normality and heteroscedascticity
 shapiro.test(plant.MG$Shoot_biomass) #P=0.002085
 shapiro.test(plant.MG$Root_biomass) #P=0.00407
 shapiro.test(plant.MG$Shoot_dry_biomass) #P=0.001823
+shapiro.test(plant.MG$Root_dry_biomass) #P=0.0001028
 shapiro.test(plant.MG$Root_length_cm) #P=0.5033
 shapiro.test(plant.MG$Leaf_relative_water_content_percentage) #P=0.0097
 shapiro.test(plant.MG$Leaf_moisture) #P=0.02015
@@ -32,6 +33,7 @@ shapiro.test(plant.MG$leaf_dry_mater_content_mg.g) #P=0.2111
 bartlett.test(plant.MG$Shoot_biomass~plant.MG$Soil_type) #P=0.8317
 bartlett.test(plant.MG$Root_biomass~plant.MG$Soil_type) #P=0.01504
 bartlett.test(plant.MG$Shoot_dry_biomass~plant.MG$Soil_type) #P=0.809
+bartlett.test(plant.MG$Root_dry_biomass~plant.MG$Soil_type) #P=0.4458
 bartlett.test(plant.MG$Root_length_cm~plant.MG$Soil_type) #P=0.3498
 bartlett.test(plant.MG$Leaf_relative_water_content_percentage~plant.MG$Soil_type) #P=0.4736
 bartlett.test(plant.MG$Leaf_moisture~plant.MG$Soil_type) #P=0.737
@@ -40,6 +42,7 @@ bartlett.test(plant.MG$leaf_dry_mater_content_mg.g~plant.MG$Soil_type) #P=0.4255
 bartlett.test(plant.MG$Shoot_biomass~plant.MG$SWHC) #P=0.0001883
 bartlett.test(plant.MG$Root_biomass~plant.MG$SWHC) #P=4.641e-06
 bartlett.test(plant.MG$Shoot_dry_biomass~plant.MG$SWHC) #P=0.0005088
+bartlett.test(plant.MG$Root_dry_biomass~plant.MG$SWHC) #P=3.82e-09
 bartlett.test(plant.MG$Root_length_cm~plant.MG$SWHC) #P=0.0009281
 bartlett.test(plant.MG$Leaf_relative_water_content_percentage~plant.MG$SWHC) #P=0.001997
 bartlett.test(plant.MG$Leaf_moisture~plant.MG$SWHC) #P=0.200
@@ -49,6 +52,7 @@ bartlett.test(plant.MG$leaf_dry_mater_content_mg.g~plant.MG$SWHC) #P=0.3127
 shapiro.test(log(plant.MG$Shoot_biomass)) #P=0.003372
 shapiro.test(log(plant.MG$Root_biomass)) #P=0.06382
 shapiro.test(log(plant.MG$Shoot_dry_biomass)) #P=0.003163
+shapiro.test(log(plant.MG$Root_dry_biomass)) #P=0.3643
 shapiro.test(log(plant.MG$Root_length_cm)) #P=0.2.702e-05
 shapiro.test(log(plant.MG$Leaf_relative_water_content_percentage)) #P=0.002189
 shapiro.test(log(plant.MG$Leaf_moisture)) #P=0.008252
@@ -57,6 +61,7 @@ shapiro.test(log(plant.MG$leaf_dry_mater_content_mg.g)) #P=0.3752
 bartlett.test(log(plant.MG$Shoot_biomass)~plant.MG$Soil_type) #P=0.5672
 bartlett.test(log(plant.MG$Root_biomass)~plant.MG$Soil_type) #P=0.0864
 bartlett.test(log(plant.MG$Shoot_dry_biomass)~plant.MG$Soil_type) #P=0.6215
+bartlett.test(log(plant.MG$Root_dry_biomass)~plant.MG$Soil_type) #P=0.5374
 bartlett.test(log(plant.MG$Root_length_cm)~plant.MG$Soil_type) #P=0.00693
 bartlett.test(log(plant.MG$Leaf_relative_water_content_percentage)~plant.MG$Soil_type) #P=0.2251
 bartlett.test(log(plant.MG$Leaf_moisture)~plant.MG$Soil_type) #P=0.3014
@@ -65,6 +70,7 @@ bartlett.test(log(plant.MG$leaf_dry_mater_content_mg.g)~plant.MG$Soil_type) #P=0
 bartlett.test(log(plant.MG$Shoot_biomass)~plant.MG$SWHC) #P=0.09125
 bartlett.test(log(plant.MG$Root_biomass)~plant.MG$SWHC) #P=0.9958
 bartlett.test(log(plant.MG$Shoot_dry_biomass)~plant.MG$SWHC) #P=0.8011
+bartlett.test(log(plant.MG$Root_dry_biomass)~plant.MG$SWHC) #P=0.1041
 bartlett.test(log(plant.MG$Root_length_cm)~plant.MG$SWHC) #P=3.487e-05
 bartlett.test(log(plant.MG$Leaf_relative_water_content_percentage)~plant.MG$SWHC) #P=2.455e-05
 bartlett.test(log(plant.MG$Leaf_moisture)~plant.MG$SWHC) #P=0.9.235e-05
@@ -74,6 +80,7 @@ bartlett.test(log(plant.MG$leaf_dry_mater_content_mg.g)~plant.MG$SWHC) #P=0.9466
 #Shoot_biomass: log
 #Root_biomass: log
 #Shoot_dry_biomass: log
+#Root_dry_biomass: log
 #Root_length: not transformed
 #Leaf moisture %: not transformed
 #LWC: not transformed
@@ -155,6 +162,32 @@ group_by(plant.MG, interaction(SWHC,Soil_type)) %>% summarize(mean(Shoot_dry_bio
 #50.IR                                          0.196
 #5.NI                                           0.052
 #50.NI                                          0.206
+
+#Shoot dry biomass
+summary(aov(log(plant.MG$Root_dry_biomass)~plant.MG$SWHC*plant.MG$Soil_type+plant.MG$Replicates))
+#Df Sum Sq Mean Sq F value   Pr(>F)    
+#plant.MG$SWHC                     1 18.072  18.072  40.394 3.63e-05 ***
+#  plant.MG$Soil_type                1  0.048   0.048   0.108    0.748    
+#plant.MG$Replicates               4  0.350   0.087   0.196    0.936    
+#plant.MG$SWHC:plant.MG$Soil_type  1  0.493   0.493   1.102    0.315    
+#Residuals                        12  5.369   0.447            
+TukeyHSD(aov(log(plant.MG$Root_dry_biomass)~plant.MG$SWHC*plant.MG$Soil_type+plant.MG$Replicates))
+#diff        lwr        upr     p adj
+#50:IR-5:IR   1.5871547  0.3312058  2.8431035 0.0127337
+#5:NI-5:IR   -0.4122846 -1.6682334  0.8436642 0.7661002
+#50:NI-5:IR   1.8029086  0.5469598  3.0588575 0.0052556
+#5:NI-50:IR  -1.9994393 -3.2553881 -0.7434905 0.0023908
+#50:NI-50:IR  0.2157539 -1.0401949  1.4717028 0.9551242
+#50:NI-5:NI   2.2151932  0.9592444  3.4711421 0.0010346
+#Letters for plot
+#50:IR  5:IR  50:NI 5:NI
+#  a    b     a     b
+group_by(plant.MG, interaction(SWHC,Soil_type)) %>% summarize(mean(Root_dry_biomass))
+#5.IR                                           0.008
+#50.IR                                          0.518
+#5.NI                                           0.054
+#50.NI                                          0.54
+
 
 #Root length
 summary(aov(plant.MG$Root_length_cm~plant.MG$SWHC*plant.MG$Soil_type+plant.MG$Replicates))
