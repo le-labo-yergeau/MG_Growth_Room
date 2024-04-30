@@ -80,31 +80,34 @@ saveRDS(colsum.vect, file = here("data", "intermediate", "colsum.vect.RDS"))
 
 ##MAGs
 #MAG table
-mag.table <- read.table(file = here("data", "raw", "MAG.otu_table.tsv"), row.names = 1, header = T, sep = "\t", comment.char = "") #714 obs in 21 var
+mag.table <- read.table(file = here("data", "raw", "MAG.otu_table.tsv"), row.names = 1, header = T, sep = "\t", comment.char = "") #300 obs in 21 var
 colnames(mag.table) <- gsub("X", "", colnames(mag.table)) #Remove X in column names
 #move taxonomy to other object
 mag.tax <- data.frame(mag.table[,21])
 colnames(mag.tax) <- "Taxonomy"
 row.names(mag.tax) <- row.names(mag.table)
 row.names(mag.tax) <- gsub("-", ".", row.names(mag.tax))
-mag.tax.sep <- mag.tax %>% separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ";")
+mag.tax.sep <- mag.tax %>% separate(Taxonomy, c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus"), sep = ";")
+mag.tax.sep <- mag.tax.sep[,-1] #Fix bug
+mag.tax.sep <- data.frame(lapply(mag.tax.sep, function(x) gsub(".__", "", x)))
+row.names(mag.tax.sep) <- row.names(mag.table)
 mag.table <- mag.table[,-21] #remove taxonomy column
 #Relativize
 mag.table.s <- mag.table[,order(colnames(mag.table))]#Sort
 colnames(mag.table.s) == colnames(gene) #check ordering
-mag.table.rel <- data.frame(apply(mag.table.s, 1, "/", colsum.vect)) #20 obs, 714 var
+mag.table.rel <- data.frame(apply(mag.table.s, 1, "/", colsum.vect)) #20 obs, 300 var
 #Sanity check
-mag.table.rel[18,654] #4.46478e-06
-mag.table.s[654,18]/colsum.vect[18] #4.46478e-06
+mag.table.rel[18,254] #4.46478e-06
+mag.table.s[254,18]/colsum.vect[18] #4.46478e-06
 
 #MAG link file (MAG-contig-gene)
-mag.link <- read.table(file = here("data", "raw", "link.tsv"), header = F, sep = "\t", comment.char = "") #1,833,497 obs in 3 var
+mag.link <- read.table(file = here("data", "raw", "link.tsv"), header = F, sep = "\t", comment.char = "") #1,183,664 obs in 3 var
 colnames(mag.link) <- c("MAG", "contig", "gene")
 mag.link$MAG <- gsub("-",".", mag.link$MAG)
 
 #MAG quality from checkM
-mag.qual <- read.table(file = here("data", "raw", "summarized_bins.tsv"), row.names = 1,  header = T, sep = "\t") #714 obs of 25 variables
-row.names(mag.qual) <- gsub("-", ".", row.names(mag.qual))
+mag.qual <- read.table(file = here("data", "raw", "out_checkm.txt"), row.names = 1,  header = T, sep = "\t", comment.char = "") #300 obs of 13 variables
+#row.names(mag.qual) <- gsub("-", ".", row.names(mag.qual))
 mag.qual <- mag.qual[order(row.names(mag.qual)),]
 
 #save intermediate
