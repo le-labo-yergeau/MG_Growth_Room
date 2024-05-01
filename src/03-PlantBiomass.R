@@ -297,7 +297,7 @@ plant.box <- ggplot(data = plant.MG.long, aes(x=Soil_type, y=Biomass, fill=SWHC)
                     theme_bw()+
                     scale_x_discrete(name="Soil water stress history", labels = c("intermittent", "continuous"))+
                     #xlab() +
-                    ylab("Fresh biomass")+
+                    ylab("Fresh biomass (g)")+
                     scale_fill_manual(name = "% SWHC", values = c("blue", "red"))+
                     geom_text(data = tukey.plant, aes(x=x, y=y, label = letters, hjust=1.5)) #Add letters from tukey
 plant.box

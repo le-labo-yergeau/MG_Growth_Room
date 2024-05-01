@@ -17,9 +17,11 @@ mag.link <- mag.link[mag.link$MAG%in%colnames(mag.table.rel),] #Do same for mag.
 mag.qual.medium <- mag.qual[row.names(mag.qual)%in%colnames(mag.table.rel),] #Do same for mag.qual, 68 obs of 13 variables
 mag.list <- colnames(mag.table.rel)
  
-  
 #Check sorting
 row.names(map) == row.names(mag.table.rel)
+
+#What percentage of reads it represents?
+mean(rowSums(mag.table.rel)) #0.08052846
 
 #Anova loop for the 34 MAGs
 i <- 1
@@ -49,6 +51,15 @@ colnames(df.MAG.soil) <- c("MAG", "Status")
 df.MAG.SWHC <- data.frame(matrix(list.MAG.SWHC, nrow = 68, ncol = 2, byrow = TRUE))
 colnames(df.MAG.SWHC) <- c("MAG", "Status")
 
+#Number of affected MAGs
+sum(df.MAG.soil$Status=="intermittent") #20
+sum(df.MAG.soil$Status=="continuous") #28
+sum(df.MAG.soil$Status=="unaffected") #20
+
+sum(df.MAG.SWHC$Status=="5") #0
+sum(df.MAG.SWHC$Status=="50") #5
+sum(df.MAG.SWHC$Status=="unaffected") #63
+
 #Completion and contamination level, contig length for different status - soil
 mean(mag.qual[row.names(mag.qual)%in%df.MAG.soil[df.MAG.soil$Status=="intermittent",]$MAG,]$Completeness) #73.375
 mean(mag.qual[row.names(mag.qual)%in%df.MAG.soil[df.MAG.soil$Status=="continuous",]$MAG,]$Completeness) #81.0525
@@ -58,10 +69,6 @@ mean(mag.qual[row.names(mag.qual)%in%df.MAG.soil[df.MAG.soil$Status=="continuous
 mean(mag.qual[row.names(mag.qual)%in%df.MAG.soil[df.MAG.soil$Status=="unaffected",]$MAG,]$Contamination) #5.614
 
 ##MAGs affected by soil history
-#Counts
-sum(df.MAG.soil$Status=="intermittent") #20
-sum(df.MAG.soil$Status=="continuous") #28
-sum(df.MAG.soil$Status=="unaffected") #20
 #Taxonomy
 sum(row.names(mag.tax) == df.MAG.soil$MAG)#68
 df.mag.soil.tax <- cbind(df.MAG.soil,mag.tax)
